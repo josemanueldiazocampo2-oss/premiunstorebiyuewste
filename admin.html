@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Store Admin</h1>
+            <a href="index.html" class="btn btn-secondary">View Store</a>
+        </header>
+
+        <div class="admin-layout">
+            <!-- Left Column: Forms -->
+            <div class="admin-sidebar">
+                <section class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
+                    <h2 style="margin-top: 0;">Add Category</h2>
+                    <form id="addCategoryForm">
+                        <div class="form-group">
+                            <input type="text" id="newCategoryName" placeholder="Category Name (e.g. Shoes)" required>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%">+ Add Category</button>
+                    </form>
+                </section>
+
+                <section class="glass-panel" style="padding: 1.5rem;">
+                    <h2 style="margin-top: 0;">Add Product</h2>
+                    <form id="addProductForm">
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" id="pName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Price ($)</label>
+                            <input type="number" id="pPrice" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="pCategory" required>
+                                <!-- Categories injected by JS -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <input type="url" id="pImage" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="pDesc" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%">Create Product</button>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Right Column: List -->
+            <div class="admin-content">
+                <section class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
+                    <h2 style="margin-top: 0;">Pedidos Recibidos</h2>
+                    <div id="ordersList" class="inventory-list">
+                        <!-- Orders injected by JS -->
+                    </div>
+                </section>
+
+                <section class="glass-panel" style="padding: 1.5rem; min-height: 500px;">
+                    <h2 style="margin-top: 0;">Inventario</h2>
+                    <div id="inventoryList" class="inventory-list">
+                        <!-- Inventory injected by JS -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
