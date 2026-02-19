@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Admin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Initial Setup Screen (First Time Only) -->
+        <div id="setupScreen" class="login-screen" style="display: none;">
+            <div class="glass-panel login-box">
+                <div class="login-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); margin-bottom: 1rem;">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                    <h2>Configuración Inicial</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">
+                        Bienvenido. Como eres el primero en acceder, configura el usuario administrador principal.
+                    </p>
+                </div>
+                <form id="setupForm">
+                    <div class="form-group">
+                        <label>Nombre de Usuario (Admin Principal)</label>
+                        <input type="text" id="setupUsername" placeholder="ej: admin" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="setupPassword" placeholder="Crea una contraseña segura" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmar Contraseña</label>
+                        <input type="password" id="setupPasswordConfirm" placeholder="Repite la contraseña" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Crear Cuenta Principal</button>
+                </form>
+                <div id="setupError" class="login-error" style="display: none; color: #ef4444; text-align: center; margin-top: 1rem; font-size: 0.9rem;"></div>
+            </div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen" style="display: none;">
+            <div class="glass-panel login-box">
+                <div class="login-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary); margin-bottom: 1rem;">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="m22 21-3-3"></path>
+                        <path d="m16 15 3 3"></path>
+                    </svg>
+                    <h2>Admin Login</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Ingresa tus credenciales de equipo</p>
+                </div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Usuario</label>
+                        <input type="text" id="loginUsername" placeholder="Nombre de usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña</label>
+                        <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Ingresar</button>
+                </form>
+                <div id="loginError" class="login-error" style="display: none; color: #ef4444; text-align: center; margin-top: 1rem; font-size: 0.9rem;"></div>
+            </div>
+        </div>
+
+        <!-- Main Admin Interface -->
+        <div id="adminInterface" style="display: none;">
+            <header class="admin-header">
+                <div class="admin-header-left">
+                    <h1>Store Admin</h1>
+                    <span id="currentUserDisplay" class="current-user"></span>
+                </div>
+                <div class="admin-header-actions">
+                    <a href="index.html" class="btn btn-secondary">Ver Tienda</a>
+                    <button id="logoutBtn" class="btn btn-secondary">Cerrar Sesión</button>
+                </div>
+            </header>
+
+            <!-- Navigation Tabs -->
+            <nav class="admin-nav">
+                <button class="nav-tab active" data-section="products">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m7.5 4.27 9 5.15"></path>
+                        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                        <path d="m3.3 7 8.7 5 8.7-5"></path>
+                        <path d="M12 22V12"></path>
+                    </svg>
+                    Productos
+                </button>
+                <button class="nav-tab" data-section="orders">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    Pedidos
+                </button>
+                <button class="nav-tab" data-section="team" id="teamTab">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Equipo
+                </button>
+            </nav>
+
+            <!-- Section: Products -->
+            <div id="section-products" class="admin-section active">
+                <div class="admin-layout">
+                    <!-- Left Column: Forms -->
+                    <div class="admin-sidebar">
+                        <section class="glass-panel" style="padding: 1.5rem; margin-bottom: 2rem;">
+                            <h2 style="margin-top: 0;">Agregar Categoría</h2>
+                            <form id="addCategoryForm">
+                                <div class="form-group">
+                                    <input type="text" id="newCategoryName" placeholder="Nombre de Categoría" required>
+                                </div>
+                                <button type="submit" class="btn" style="width: 100%">+ Agregar Categoría</button>
+                            </form>
+                        </section>
+
+                        <section class="glass-panel" style="padding: 1.5rem;">
+                            <h2 style="margin-top: 0;">Agregar Producto</h2>
+                            <form id="addProductForm">
+                                <div class="form-group">
+                                    <label>Nombre del Producto</label>
+                                    <input type="text" id="pName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Precio ($)</label>
+                                    <input type="number" id="pPrice" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Categoría</label>
+                                    <select id="pCategory" required>
+                                        <!-- Categories injected by JS -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Imagen del Producto</label>
+                                    <div class="image-input-tabs">
+                                        <button type="button" class="image-tab active" data-tab="url">URL</button>
+                                        <button type="button" class="image-tab" data-tab="file">Subir Archivo</button>
+                                    </div>
+                                    <div id="imageUrlInput" class="image-input-panel active">
+                                        <input type="url" id="pImage" placeholder="https://...">
+                                    </div>
+                                    <div id="imageFileInput" class="image-input-panel" style="display: none;">
+                                        <input type="file" id="pImageFile" accept="image/*">
+                                        <div id="imagePreview" class="image-preview" style="display: none;">
+                                            <img id="previewImg" src="" alt="Preview">
+                                            <button type="button" class="remove-image-btn" onclick="clearImagePreview()">✕</button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="pImageData" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Descripción</label>
+                                    <textarea id="pDesc" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn" style="width: 100%">Crear Producto</button>
+                            </form>
+                        </section>
+                    </div>
+
+                    <!-- Right Column: Inventory -->
+                    <div class="admin-content">
+                        <section class="glass-panel" style="padding: 1.5rem; min-height: 500px;">
+                            <h2 style="margin-top: 0;">Inventario</h2>
+                            <div id="inventoryList" class="inventory-list">
+                                <!-- Inventory injected by JS -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Orders -->
+            <div id="section-orders" class="admin-section">
+                <section class="glass-panel" style="padding: 1.5rem;">
+                    <h2 style="margin-top: 0;">Pedidos Recibidos</h2>
+                    <div id="ordersList" class="orders-list">
+                        <!-- Orders injected by JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Section: Team -->
+            <div id="section-team" class="admin-section">
+                <div class="admin-layout">
+                    <div class="admin-sidebar">
+                        <section class="glass-panel" style="padding: 1.5rem;" id="addMemberSection">
+                            <h2 style="margin-top: 0;">Agregar Miembro</h2>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                                Solo el administrador principal puede agregar miembros al equipo.
+                            </p>
+                            <form id="addMemberForm">
+                                <div class="form-group">
+                                    <label>Nombre de Usuario</label>
+                                    <input type="text" id="memberUsername" placeholder="usuario123" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contraseña</label>
+                                    <input type="password" id="memberPassword" placeholder="••••••" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Rol</label>
+                                    <select id="memberRole">
+                                        <option value="admin">Administrador</option>
+                                        <option value="editor">Editor</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn" style="width: 100%">+ Agregar Miembro</button>
+                            </form>
+                        </section>
+                        <section class="glass-panel" style="padding: 1.5rem; display: none;" id="viewOnlySection">
+                            <h2 style="margin-top: 0;">Información</h2>
+                            <p style="color: var(--text-muted);">
+                                Solo el administrador principal puede gestionar el equipo. 
+                                Contacta al host para hacer cambios.
+                            </p>
+                        </section>
+                    </div>
+
+                    <div class="admin-content">
+                        <section class="glass-panel" style="padding: 1.5rem;">
+                            <h2 style="margin-top: 0;">Equipo de Trabajo</h2>
+                            <div id="teamList" class="team-list">
+                                <!-- Team members injected by JS -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
